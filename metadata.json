@@ -1,0 +1,5 @@
+{
+  "name": "CLL Fitness Companion",
+  "description": "Una aplicación web diseñada para pacientes con Leucemia Linfocítica Crónica (LLC) para gestionar sesiones de ejercicio personalizadas, calcular cargas basadas en 1RM y realizar un seguimiento del progreso físico siguiendo las guías ACSM.",
+  "requestFramePermissions": []
+}
