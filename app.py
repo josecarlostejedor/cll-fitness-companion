@@ -9,10 +9,10 @@ from docx.shared import Inches, Pt, RGBColor
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.oxml import OxmlElement, ns
 
-# Configuración estética de la página
+# Configuración de la página
 st.set_page_config(page_title="CLL-CARE Prescripción Profesional", layout="wide", initial_sidebar_state="expanded")
 
-# CSS Inyectado para estética profesional en Streamlit
+# CSS Profesional para Streamlit
 st.markdown("""
 <style>
     .main { background-color: #f8fafc; }
@@ -65,7 +65,6 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 def get_base64_image(image_path):
-    # Simulación de carga de imagen para el demo si no existe el archivo físico
     if os.path.exists(image_path):
         with open(image_path, "rb") as img_file:
             return f"data:image/jpg;base64,{base64.b64encode(img_file.read()).decode()}"
@@ -88,8 +87,7 @@ def set_cell_background(cell, fill_color):
     shading_elm.set(ns.qn('w:fill'), fill_color)
     cell._tc.get_or_add_tcPr().append(shading_elm)
 
-# --- BASE DE DATOS COMPLETA RECONSTRUIDA ---
-# Incluimos los datos de las 4 sesiones para que el interface no falle
+# --- BASE DE DATOS MAESTRA ---
 EXERCISES_DB = {
     # SESIÓN 1
     's1_w_1': {'nombre': 'Caminar círculos + movilidad', 'img': 'images/caminar_movilidad.jpg', 'parte': 'Calentamiento', 'rpe': 6, 'plan': '2 min'},
@@ -104,28 +102,83 @@ EXERCISES_DB = {
     's1_r_4': {'nombre': 'Press banca barra', 'img': 'images/press_banca.jpg', 'parte': 'Entrenamiento de Resistencia', 'rpe': 7, 'plan': '3x12'},
     's1_r_5': {'nombre': 'Curl bíceps + h', 'img': 'images/curl_hombro.jpg', 'parte': 'Entrenamiento de Resistencia', 'rpe': 7, 'plan': '3x12'},
     's1_r_6': {'nombre': 'Remo mancuernas', 'img': 'images/remo.jpg', 'parte': 'Entrenamiento de Resistencia', 'rpe': 7, 'plan': '3x12'},
+    's1_c_1': {'nombre': 'Caminata + respiración', 'img': 'images/caminata_suave.jpg', 'parte': 'Enfriamiento', 'rpe': 3, 'plan': '3 min'},
+    's1_c_2': {'nombre': 'Estiramiento cuádriceps', 'img': 'images/est_cuadriceps.jpg', 'parte': 'Enfriamiento', 'rpe': 3, 'plan': '1 min'},
+    's1_c_3': {'nombre': 'Estiramiento isquios', 'img': 'images/est_isquios.jpg', 'parte': 'Enfriamiento', 'rpe': 3, 'plan': '1 min'},
+    's1_c_4': {'nombre': 'Estiramiento pantorrilla', 'img': 'images/est_gemelos.jpg', 'parte': 'Enfriamiento', 'rpe': 3, 'plan': '1 min'},
+    's1_c_5': {'nombre': 'Estiramiento bíceps', 'img': 'images/est_biceps.jpg', 'parte': 'Enfriamiento', 'rpe': 3, 'plan': '1 min'},
+    's1_c_6': {'nombre': 'Estiramiento hombros', 'img': 'images/est_hombros.jpg', 'parte': 'Enfriamiento', 'rpe': 3, 'plan': '1 min'},
+    's1_c_7': {'nombre': 'Movilidad cervical', 'img': 'images/movilidad_cuello.jpg', 'parte': 'Enfriamiento', 'rpe': 2, 'plan': '2 min'},
+    
     # SESIÓN 2
     's2_w_1': {'nombre': 'Caminar + movilidad 2', 'img': 'images/caminar_movilidad_2.jpg', 'parte': 'Calentamiento', 'rpe': 6, 'plan': '2 min'},
-    's2_r_1': {'nombre': 'Estocada carga', 'img': 'images/estocada_carga.jpg', 'parte': 'Entrenamiento de Resistencia', 'rpe': 7, 'plan': '3x12'},
-    's2_r_2': {'nombre': 'Hip Thrust', 'img': 'images/hip_thrust.jpg', 'parte': 'Entrenamiento de Resistencia', 'rpe': 7, 'plan': '3x12'},
+    's2_w_2': {'nombre': 'Propiocepción tobillo', 'img': 'images/propiocepcion.jpg', 'parte': 'Calentamiento', 'rpe': 6, 'plan': '2 min'},
+    's2_w_3': {'nombre': 'Elevación rodilla+brazo', 'img': 'images/rodilla_brazo.jpg', 'parte': 'Calentamiento', 'rpe': 6, 'plan': '1 min'},
+    's2_w_4': {'nombre': 'Sit-to-stand', 'img': 'images/sit_to_stand.jpg', 'parte': 'Calentamiento', 'rpe': 6, 'plan': '1 min'},
+    's2_w_5': {'nombre': 'Step-up', 'img': 'images/step_up.jpg', 'parte': 'Calentamiento', 'rpe': 6, 'plan': '2 min'},
+    's2_w_6': {'nombre': 'Boxeo suave', 'img': 'images/boxeo.jpg', 'parte': 'Calentamiento', 'rpe': 6, 'plan': '2 min'},
+    's2_r_1': {'nombre': 'Estocada adelante carga', 'img': 'images/estocada_carga.jpg', 'parte': 'Entrenamiento de Resistencia', 'rpe': 7, 'plan': '3x12'},
+    's2_r_2': {'nombre': 'Empuje cadera', 'img': 'images/hip_thrust.jpg', 'parte': 'Entrenamiento de Resistencia', 'rpe': 7, 'plan': '3x12'},
+    's2_r_3': {'nombre': 'Press Pallof', 'img': 'images/pallof.jpg', 'parte': 'Entrenamiento de Resistencia', 'rpe': 7, 'plan': '3x12'},
+    's2_r_4': {'nombre': 'Press banca mancuernas', 'img': 'images/press_mancuernas.jpg', 'parte': 'Entrenamiento de Resistencia', 'rpe': 7, 'plan': '3x12'},
+    's2_r_5': {'nombre': 'Press hombros', 'img': 'images/press_hombro_manc.jpg', 'parte': 'Entrenamiento de Resistencia', 'rpe': 7, 'plan': '3x12'},
+    's2_r_6': {'nombre': 'Saltos sentado-parado', 'img': 'images/salto_silla.jpg', 'parte': 'Entrenamiento de Resistencia', 'rpe': 7, 'plan': '3x12'},
+    's2_c_1': {'nombre': 'Caminata 2', 'img': 'images/caminata_2.jpg', 'parte': 'Enfriamiento', 'rpe': 3, 'plan': '3 min'},
+    's2_c_2': {'nombre': 'Est. cuádriceps 2', 'img': 'images/est_cuadriceps_2.jpg', 'parte': 'Enfriamiento', 'rpe': 3, 'plan': '1 min'},
+    's2_c_3': {'nombre': 'Est. glúteos 2', 'img': 'images/est_gluteo.jpg', 'parte': 'Enfriamiento', 'rpe': 3, 'plan': '1 min'},
+    's2_c_4': {'nombre': 'Est. aductor', 'img': 'images/est_aductor.jpg', 'parte': 'Enfriamiento', 'rpe': 3, 'plan': '1 min'},
+    's2_c_5': {'nombre': 'Est. isquios 2', 'img': 'images/est_isquios_2.jpg', 'parte': 'Enfriamiento', 'rpe': 3, 'plan': '1 min'},
+    's2_c_6': {'nombre': 'Est. hombros 2', 'img': 'images/est_hombros_2.jpg', 'parte': 'Enfriamiento', 'rpe': 3, 'plan': '1 min'},
+    's2_c_7': {'nombre': 'Movilidad cervical 2', 'img': 'images/movilidad_cuello_2.jpg', 'parte': 'Enfriamiento', 'rpe': 2, 'plan': '2 min'},
+
     # SESIÓN 3
     's3_w_1': {'nombre': 'Caminar + movilidad 3', 'img': 'images/caminar_3.jpg', 'parte': 'Calentamiento', 'rpe': 6, 'plan': '2 min'},
-    's3_r_1': {'nombre': 'Sentadilla Sumo', 'img': 'images/sentadilla_sumo.jpg', 'parte': 'Entrenamiento de Resistencia', 'rpe': 7, 'plan': '3x12'},
+    's3_w_2': {'nombre': 'Step-ups laterales', 'img': 'images/step_lateral.jpg', 'parte': 'Calentamiento', 'rpe': 6, 'plan': '2 min'},
+    's3_w_3': {'nombre': 'Flexiones cerradas', 'img': 'images/flexiones_cerradas.jpg', 'parte': 'Calentamiento', 'rpe': 6, 'plan': '1 min'},
+    's3_w_4': {'nombre': 'Estocadas sitio', 'img': 'images/estocada_sitio.jpg', 'parte': 'Calentamiento', 'rpe': 6, 'plan': '1 min'},
+    's3_w_5': {'nombre': 'Saltos tijera', 'img': 'images/jumping_jacks.jpg', 'parte': 'Calentamiento', 'rpe': 6, 'plan': '2 min'},
+    's3_w_6': {'nombre': 'Puente glúteos', 'img': 'images/puente.jpg', 'parte': 'Calentamiento', 'rpe': 6, 'plan': '2 min'},
+    's3_r_1': {'nombre': 'Sentadilla amplia', 'img': 'images/sentadilla_sumo.jpg', 'parte': 'Entrenamiento de Resistencia', 'rpe': 7, 'plan': '3x12'},
+    's3_r_2': {'nombre': 'Peso muerto 3', 'img': 'images/peso_muerto_3.jpg', 'parte': 'Entrenamiento de Resistencia', 'rpe': 7, 'plan': '3x12'},
+    's3_r_3': {'nombre': 'Remo barra', 'img': 'images/remo_barra.jpg', 'parte': 'Entrenamiento de Resistencia', 'rpe': 7, 'plan': '3x12'},
+    's3_r_4': {'nombre': 'Curl bíceps barra', 'img': 'images/curl_barra.jpg', 'parte': 'Entrenamiento de Resistencia', 'rpe': 7, 'plan': '3x12'},
+    's3_r_5': {'nombre': 'Elevaciones laterales', 'img': 'images/elev_laterales.jpg', 'parte': 'Entrenamiento de Resistencia', 'rpe': 7, 'plan': '3x12'},
+    's3_r_6': {'nombre': 'Subida caja 1 pierna', 'img': 'images/subida_caja.jpg', 'parte': 'Entrenamiento de Resistencia', 'rpe': 7, 'plan': '3x12'},
+    's3_c_1': {'nombre': 'Caminar 3', 'img': 'images/caminar_3_end.jpg', 'parte': 'Enfriamiento', 'rpe': 3, 'plan': '3 min'},
+    's3_c_2': {'nombre': 'Est. cuádriceps 3', 'img': 'images/est_cuadriceps_3.jpg', 'parte': 'Enfriamiento', 'rpe': 3, 'plan': '1 min'},
+    's3_c_3': {'nombre': 'Est. glúteos 3', 'img': 'images/est_gluteo_3.jpg', 'parte': 'Enfriamiento', 'rpe': 3, 'plan': '1 min'},
+    's3_c_4': {'nombre': 'Est. isquios 3', 'img': 'images/est_isquios_3.jpg', 'parte': 'Enfriamiento', 'rpe': 3, 'plan': '1 min'},
+    's3_c_5': {'nombre': 'Est. bíceps 3', 'img': 'images/est_biceps_3.jpg', 'parte': 'Enfriamiento', 'rpe': 3, 'plan': '1 min'},
+    's3_c_6': {'nombre': 'Est. hombros 3', 'img': 'images/est_hombros_3.jpg', 'parte': 'Enfriamiento', 'rpe': 3, 'plan': '1 min'},
+    's3_c_7': {'nombre': 'Movilidad cervical 3', 'img': 'images/movilidad_cuello_3.jpg', 'parte': 'Enfriamiento', 'rpe': 2, 'plan': '2 min'},
+
     # SESIÓN 4
     's4_w_1': {'nombre': 'Caminar + movilidad 4', 'img': 'images/caminar_4.jpg', 'parte': 'Calentamiento', 'rpe': 6, 'plan': '2 min'},
-    's4_r_1': {'nombre': 'Estocada Lat KB', 'img': 'images/estocada_lat_kb.jpg', 'parte': 'Entrenamiento de Resistencia', 'rpe': 7, 'plan': '3x12'},
+    's4_w_2': {'nombre': 'Sit-to-stand 4', 'img': 'images/sit_to_stand_4.jpg', 'parte': 'Calentamiento', 'rpe': 6, 'plan': '2 min'},
+    's4_w_3': {'nombre': 'Flexión codo banda', 'img': 'images/curl_banda.jpg', 'parte': 'Calentamiento', 'rpe': 6, 'plan': '1 min'},
+    's4_w_4': {'nombre': 'Elevación pantorrilla', 'img': 'images/gemelos.jpg', 'parte': 'Calentamiento', 'rpe': 6, 'plan': '1 min'},
+    's4_w_5': {'nombre': 'Saltos 4', 'img': 'images/saltos_cortos.jpg', 'parte': 'Calentamiento', 'rpe': 6, 'plan': '2 min'},
+    's4_w_6': {'nombre': 'Circunducción hombros', 'img': 'images/circunduccion.jpg', 'parte': 'Calentamiento', 'rpe': 6, 'plan': '2 min'},
+    's4_r_1': {'nombre': 'Estocada lateral KB', 'img': 'images/estocada_lat_kb.jpg', 'parte': 'Entrenamiento de Resistencia', 'rpe': 7, 'plan': '3x12'},
+    's4_r_2': {'nombre': 'Peso muerto 4', 'img': 'images/peso_muerto_4.jpg', 'parte': 'Entrenamiento de Resistencia', 'rpe': 7, 'plan': '3x12'},
+    's4_r_3': {'nombre': 'Vuelo pecho inclinado', 'img': 'images/vuelo_pecho.jpg', 'parte': 'Entrenamiento de Resistencia', 'rpe': 7, 'plan': '3x12'},
+    's4_r_4': {'nombre': 'Press tríceps supino', 'img': 'images/press_frances.jpg', 'parte': 'Entrenamiento de Resistencia', 'rpe': 7, 'plan': '3x12'},
+    's4_r_5': {'nombre': 'Elevación frontal', 'img': 'images/elev_frontal.jpg', 'parte': 'Entrenamiento de Resistencia', 'rpe': 7, 'plan': '3x12'},
+    's4_r_6': {'nombre': 'Sentadillas salto', 'img': 'images/sentadilla_salto.jpg', 'parte': 'Entrenamiento de Resistencia', 'rpe': 7, 'plan': '3x12'},
+    's4_c_1': {'nombre': 'Caminata 4', 'img': 'images/caminata_4_end.jpg', 'parte': 'Enfriamiento', 'rpe': 3, 'plan': '3 min'},
+    's4_c_2': {'nombre': 'Est. cuádriceps 4', 'img': 'images/est_cuadriceps_4.jpg', 'parte': 'Enfriamiento', 'rpe': 3, 'plan': '1 min'},
+    's4_c_3': {'nombre': 'Est. glúteos 4', 'img': 'images/est_gluteo_4.jpg', 'parte': 'Enfriamiento', 'rpe': 3, 'plan': '1 min'},
+    's4_c_4': {'nombre': 'Est. tríceps', 'img': 'images/est_triceps.jpg', 'parte': 'Enfriamiento', 'rpe': 3, 'plan': '1 min'},
+    's4_c_5': {'nombre': 'Est. pecho', 'img': 'images/est_pecho.jpg', 'parte': 'Enfriamiento', 'rpe': 3, 'plan': '1 min'},
+    's4_c_6': {'nombre': 'Est. hombros 4', 'img': 'images/est_hombros_4.jpg', 'parte': 'Enfriamiento', 'rpe': 3, 'plan': '1 min'},
+    's4_c_7': {'nombre': 'Movilidad cervical 4', 'img': 'images/movilidad_cuello_4.jpg', 'parte': 'Enfriamiento', 'rpe': 2, 'plan': '2 min'},
 }
 
-# Añadir enfriamientos estándar si faltan
-for sid in range(1, 5):
-    EXERCISES_DB[f's{sid}_c_1'] = {'nombre': f'Caminata Suave S{sid}', 'img': 'images/caminata_suave.jpg', 'parte': 'Enfriamiento', 'rpe': 3, 'plan': '3 min'}
-    EXERCISES_DB[f's{sid}_c_2'] = {'nombre': f'Estiramiento S{sid}', 'img': 'images/est_cuadriceps.jpg', 'parte': 'Enfriamiento', 'rpe': 3, 'plan': '1 min'}
-
 SESSIONS_DB = [
-    {'id': 1, 'nombre': "Sesión 1: Estabilidad Base", 'ejercicios': ['s1_w_1','s1_w_2','s1_w_3','s1_w_4','s1_w_5','s1_w_6','s1_r_1','s1_r_2','s1_r_3','s1_r_4','s1_r_5','s1_r_6','s1_c_1','s1_c_2']},
-    {'id': 2, 'nombre': "Sesión 2: Potencia Dinámica", 'ejercicios': ['s2_w_1','s2_r_1','s2_r_2','s2_c_1','s2_c_2']},
-    {'id': 3, 'nombre': "Sesión 3: Fuerza Integral", 'ejercicios': ['s3_w_1','s3_r_1','s3_c_1','s3_c_2']},
-    {'id': 4, 'nombre': "Sesión 4: Control y Empuje", 'ejercicios': ['s4_w_1','s4_r_1','s4_c_1','s4_c_2']}
+    {'id': 1, 'nombre': "Sesión 1: Estabilidad Base", 'ejercicios': ['s1_w_1','s1_w_2','s1_w_3','s1_w_4','s1_w_5','s1_w_6','s1_r_1','s1_r_2','s1_r_3','s1_r_4','s1_r_5','s1_r_6','s1_c_1','s1_c_2','s1_c_3','s1_c_4','s1_c_5','s1_c_6','s1_c_7']},
+    {'id': 2, 'nombre': "Sesión 2: Potencia Dinámica", 'ejercicios': ['s2_w_1','s2_w_2','s2_w_3','s2_w_4','s2_w_5','s2_w_6','s2_r_1','s2_r_2','s2_r_3','s2_r_4','s2_r_5','s2_r_6','s2_c_1','s2_c_2','s2_c_3','s2_c_4','s2_c_5','s2_c_6','s2_c_7']},
+    {'id': 3, 'nombre': "Sesión 3: Fuerza Integral", 'ejercicios': ['s3_w_1','s3_w_2','s3_w_3','s3_w_4','s3_w_5','s3_w_6','s3_r_1','s3_r_2','s3_r_3','s3_r_4','s3_r_5','s3_r_6','s3_c_1','s3_c_2','s3_c_3','s3_c_4','s3_c_5','s3_c_6','s3_c_7']},
+    {'id': 4, 'nombre': "Sesión 4: Control y Empuje", 'ejercicios': ['s4_w_1','s4_w_2','s4_w_3','s4_w_4','s4_w_5','s4_w_6','s4_r_1','s4_r_2','s4_r_3','s4_r_4','s4_r_5','s4_r_6','s4_c_1','s4_c_2','s4_c_3','s4_c_4','s4_c_5','s4_c_6','s4_c_7']}
 ]
 
 if 'rms' not in st.session_state: st.session_state.rms = {}
@@ -155,7 +208,6 @@ def generate_docx(session_id):
         f_run = f_para.add_run("Página ")
         add_page_number(f_run)
 
-    # Título Principal
     doc.add_heading('PLAN TERAPÉUTICO CLL-CARE', 0).alignment = WD_ALIGN_PARAGRAPH.CENTER
     p_info = doc.add_paragraph()
     p_info.alignment = WD_ALIGN_PARAGRAPH.CENTER
@@ -163,7 +215,6 @@ def generate_docx(session_id):
     run_patient.bold = True
     p_info.add_run(f"\nSesión: {session['id']} - {session['nombre']}")
 
-    # FLUJO CONTINUO SIN SALTOS DE PÁGINA ENTRE FASES
     phases = [('Calentamiento', 'CALENTAMIENTO'), ('Entrenamiento de Resistencia', 'RESISTENCIA'), ('Enfriamiento', 'ENFRIAMIENTO')]
     
     for phase_key, phase_title in phases:
@@ -189,7 +240,8 @@ def generate_docx(session_id):
                     if os.path.exists(ex['img']):
                         p_img = cell.add_paragraph()
                         p_img.alignment = WD_ALIGN_PARAGRAPH.CENTER
-                        p_img.add_run().add_picture(ex['img'], width=Inches(1.6))
+                        # IMÁGENES ESTANDARIZADAS A 1.5 PULGADAS
+                        p_img.add_run().add_picture(ex['img'], width=Inches(1.5))
                     
                     rm = st.session_state.rms.get(eid, 0.0)
                     is_autocarga = any(word in ex['nombre'].lower() for word in ['peso corporal', 'plancha', 'pared', 'equilibrio', 'sit-to-stand', 'paso', 'tijera', 'rodilla', 'boxeo', 'salto'])
@@ -205,13 +257,13 @@ def generate_docx(session_id):
             p_inst.add_run("3 VECES").bold = True
             p_inst.add_run(" por sesión. Al terminar el enfriamiento, descanse 3 minutos antes de volver a empezar. Caminar 60 minutos cada día de la semana para combatir la fatiga oncológica.").font.size = Pt(11)
 
-    # PÁGINA FINAL: COMPROMISO + BORG
+    # COMPROMISO + BORG
     doc.add_page_break()
     doc.add_heading('COMPROMISO DIARIO', level=1)
     img_comp = "images/compromiso_diario.jpg"
     if os.path.exists(img_comp):
         doc.add_paragraph().alignment = WD_ALIGN_PARAGRAPH.CENTER
-        doc.paragraphs[-1].add_run().add_picture(img_comp, width=Inches(3.5))
+        doc.paragraphs[-1].add_run().add_picture(img_comp, width=Inches(3.0))
     
     p_comp = doc.add_paragraph()
     p_comp.alignment = WD_ALIGN_PARAGRAPH.CENTER
@@ -222,7 +274,6 @@ def generate_docx(session_id):
 
     doc.add_paragraph("\n")
     doc.add_heading('ESCALA DE BORG', level=2)
-    doc.add_paragraph("Marque con una X su esfuerzo percibido:")
     
     borg_data = [
         ("0", "Reposo", "D9E9FF"), ("1-2", "M. Ligero", "D9E9FF"),
@@ -255,7 +306,7 @@ if page == "👤 Perfil Paciente":
     with c2: st.session_state.profile['apellidos'] = st.text_input("Apellidos", st.session_state.profile['apellidos'])
     with c3: st.session_state.profile['sexo'] = st.selectbox("Sexo", ["Hombre", "Mujer", "Otro"])
     st.session_state.profile['edad'] = st.number_input("Edad", 1, 120, int(st.session_state.profile['edad']))
-    st.info("Compromiso: Caminar 60 min diarios es vital para el éxito del tratamiento.")
+    st.info("Caminar 60 min cada día para combatir la fatiga oncológica.")
 
 elif page == "⚙️ Gestión de RM":
     st.title("Gestión de Cargas (1RM)")
@@ -267,15 +318,12 @@ elif page == "⚙️ Gestión de RM":
 elif page == "🏋️ Sesiones y Prescripción":
     st.title("Protocolos de Entrenamiento")
     sid = st.radio("Seleccionar Sesión:", [s['id'] for s in SESSIONS_DB], format_func=lambda x: f"Sesión {x}", horizontal=True)
-    
-    col_btn1, col_btn2 = st.columns([2, 1])
-    with col_btn2:
-        st.download_button(label="📥 Descargar Informe Word Profesional", data=generate_docx(sid), file_name=f"CLL_CARE_S{sid}_{st.session_state.profile['nombre']}.docx")
+    st.download_button(label="📥 Descargar Informe Word Profesional", data=generate_docx(sid), file_name=f"Prescripcion_{st.session_state.profile['nombre']}_S{sid}.docx")
     
     active_sess = next(s for s in SESSIONS_DB if s['id'] == sid)
     st.markdown(f"### {active_sess['nombre']}")
     
-    for p_key, p_label, p_class in [('Calentamiento', 'Calentamiento', 'calentamiento'), ('Entrenamiento de Resistencia', 'Entrenamiento de Resistencia', 'resistencia'), ('Enfriamiento', 'Enfriamiento', 'enfriamiento')]:
+    for p_key, p_label, p_class in [('Calentamiento', 'CALENTAMIENTO', 'calentamiento'), ('Entrenamiento de Resistencia', 'ENTRENAMIENTO DE RESISTENCIA', 'resistencia'), ('Enfriamiento', 'ENFRIAMIENTO')]:
         phase_exs = [eid for eid in active_sess['ejercicios'] if eid in EXERCISES_DB and EXERCISES_DB[eid]['parte'] == p_key]
         if phase_exs:
             st.markdown(f'<div class="phase-header {p_class}">{p_label}</div>', unsafe_allow_html=True)
@@ -284,7 +332,7 @@ elif page == "🏋️ Sesiones y Prescripción":
                 ex = EXERCISES_DB[eid]
                 with cols[i % 3]:
                     rm = st.session_state.rms.get(eid, 0)
-                    is_auto = any(w in ex['nombre'].lower() for w in ['peso corporal', 'plancha', 'pared'])
+                    is_auto = any(w in ex['nombre'].lower() for w in ['peso corporal', 'plancha', 'pared', 'equilibrio', 'sit-to-stand'])
                     carga_text = "P.C." if is_auto else f"{int(rm*0.7)}kg"
                     
                     st.markdown(f"""
